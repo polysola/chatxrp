@@ -3,35 +3,35 @@ import { ToolItemProps } from "./components/dashboard/tools-item";
 // Không cần khai báo lại ToolItemProps ở đây
 export const TOOLS: ToolItemProps[] = [
   {
-    title: "Conversation",
+    title: "AI Chat",
     icon: "/icons/conversation.svg",
     url: "/conversation",
     color: "bg-blue-500",
     slug: "conversation",
   },
   {
-    title: "Photo generation",
+    title: "Image Creator",
     icon: "/icons/photo.svg",
     url: "/photo",
     color: "bg-violet-500",
     slug: "photo",
   },
   {
-    title: "XRPL Tools",
+    title: "XRPL Helper",
     icon: "/icons/video.svg",
     url: "/tools",
     color: "bg-amber-500",
     slug: "tools",
   },
   {
-    title: "Audio generation",
+    title: "Music Maker",
     icon: "/icons/audio.svg",
     url: "/audio",
     color: "bg-orange-500",
     slug: "audio",
   },
   {
-    title: "Code generation",
+    title: "Code Assistant",
     icon: "/icons/code.svg",
     url: "/code",
     color: "bg-green-500",

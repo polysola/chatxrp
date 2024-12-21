@@ -10,11 +10,11 @@ const ToolsNavigation = ({ title = "Unlock the power of AI" }) => {
           Chat with the smartest AI - Experience the power of AI with us
         </p>
       </div>
-      {/* <div className="w-full max-w-[30.75rem] mx-auto">
+      <div className="w-full max-w-[30.75rem] mx-auto">
         {TOOLS.map((tool, index) => (
           <ToolItem key={index} {...tool} />
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };
