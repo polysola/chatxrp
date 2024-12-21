@@ -40,7 +40,7 @@ const Loading = ({ className }: LoadingProps) => {
 
       {/* Chữ và Dấu Chấm */}
       <div className="flex items-center">
-        <span className="text-sm font-medium text-sky-400">Đang xử lý</span>
+        <span className="text-sm font-medium text-sky-400">Processing...</span>
         <span className="text-sky-400 w-6 text-sm">{dots}</span>
       </div>
 
