@@ -27,7 +27,7 @@ const Logo: React.FC<LogoProps> = ({ className }) => {
       />
 
       <span className={cn("ml-2 font-bold text-2xl", poppins.className)}>
-        Chat XRP
+        Chat XPT
       </span>
     </a>
   );

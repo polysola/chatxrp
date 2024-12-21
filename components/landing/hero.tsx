@@ -26,7 +26,7 @@ const Hero = () => {
           <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
             <div className="hidden sm:mb-8 sm:flex sm:justify-center">
               <div className="rounded-full px-3 py-1 text-sm leading-6 text-gray-400 border">
-                Get started with Chat XRP AI
+                Get started with Chat XPT AI
               </div>
             </div>
             <div className="text-center">
@@ -43,7 +43,7 @@ const Hero = () => {
                 </span>
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-700">
-                Chat XRP AI has been integrated into the XRP Ledger.
+                Chat XPT AI has been integrated into the XRP Ledger.
               </p>
               <div className="mt-10 flex flex-col items-center justify-center gap-8">
                 <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-6">
