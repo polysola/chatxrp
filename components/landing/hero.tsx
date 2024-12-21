@@ -60,7 +60,7 @@ const Hero = () => {
 
                 <div className="flex items-center justify-center gap-4">
                   <a
-                    href="https://x.com/XRPAI_ChatXPT"
+                    href="hhttps://x.com/XRPAI_ChatXPT"
                     className="text-sm font-semibold leading-6 text-gray-400"
                   >
                     <svg

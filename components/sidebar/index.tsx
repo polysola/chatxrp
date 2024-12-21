@@ -23,7 +23,7 @@ const SocialLinks = () => {
         <Image src="/tg.png" alt="Telegram" width={40} height={40} />
       </Link>
       <Link
-        href="ttps://x.com/XRPAI_ChatXPT"
+        href="https://x.com/XRPAI_ChatXPT"
         className="transition-opacity hover:opacity-80"
         target="_blank"
         rel="noopener noreferrer"
