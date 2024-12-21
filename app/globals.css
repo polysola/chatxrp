@@ -140,3 +140,6 @@ body,
     width: 6px;
   }
 }
+img {
+  min-width: 32px;
+}

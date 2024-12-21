@@ -80,7 +80,7 @@ const Hero = () => {
                     </svg>
                   </a>
                   <a
-                    href="https://t.me/"
+                    href="https://t.me/ChatXPT_Portal"
                     className="text-sm font-semibold leading-6 text-gray-400"
                   >
                     <svg

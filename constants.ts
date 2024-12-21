@@ -4,35 +4,35 @@ import { ToolItemProps } from "./components/dashboard/tools-item";
 export const TOOLS: ToolItemProps[] = [
   {
     title: "AI Chat",
-    icon: "/icons/conversation.svg",
+    icon: "chat.png",
     url: "/conversation",
     color: "bg-blue-500",
     slug: "conversation",
   },
   {
     title: "Image Creator",
-    icon: "/icons/photo.svg",
+    icon: "img.png",
     url: "/photo",
     color: "bg-violet-500",
     slug: "photo",
   },
   {
     title: "XRPL Helper",
-    icon: "/icons/video.svg",
+    icon: "/tools.png",
     url: "/tools",
     color: "bg-amber-500",
     slug: "tools",
   },
   {
     title: "Music Maker",
-    icon: "/icons/audio.svg",
+    icon: "music.png",
     url: "/audio",
     color: "bg-orange-500",
     slug: "audio",
   },
   {
     title: "Code Assistant",
-    icon: "/icons/code.svg",
+    icon: "code.png",
     url: "/code",
     color: "bg-green-500",
     slug: "code",
@@ -43,7 +43,7 @@ export const TOOLS: ToolItemProps[] = [
 export const NAVIGATIONS = [
   {
     title: "Dashboard",
-    icon: "/icons/dashboard.svg",
+    icon: "da.png",
     url: "/dashboard",
     slug: "dashboard"
   },

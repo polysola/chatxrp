@@ -1,9 +1,9 @@
-import XRPTool from "@/components/xrp-tool";
+import XRPToolNew from "@/components/xrp-toolnew";
 
 export default function XRPPage() {
   return (
     <div className="container mx-auto">
-      <XRPTool />
+      <XRPToolNew />
     </div>
   );
 }

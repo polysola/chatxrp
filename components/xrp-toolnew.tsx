@@ -121,7 +121,7 @@ const TransactionItem = ({ tx }: { tx: any }) => {
   );
 };
 
-const XRPTool = () => {
+const XRPToolNew = () => {
   const [client, setClient] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -696,4 +696,4 @@ const XRPTool = () => {
   );
 };
 
-export default XRPTool;
+export default XRPToolNew;

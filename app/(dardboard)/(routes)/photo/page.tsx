@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -10,12 +11,11 @@ import ToolsNavigation from "@/components/dashboard/tools-navigation";
 import { cn } from "@/lib/utils";
 import AiResponse from "@/components/dashboard/ai-response";
 import UserMessage from "@/components/dashboard/user-message";
-
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { Send } from "lucide-react";
+import { Send, Expand, Download, Settings2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -23,7 +23,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   MODEL_OPTIONS,
   PHOTO_AMOUNT_OPTIONS,
@@ -69,53 +73,15 @@ const PhotoPage = () => {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
   };
-  const handleKeyDown = (e: any) => {
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // Prevents newlines in the textarea
-      onSubmit(form.getValues());
+      e.preventDefault();
+      form.handleSubmit(onSubmit)();
     }
   };
-  const onEdit = async (imageUrl: string) => {
-    try {
-      const response = await fetch("/api/edit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          imageUrl,
-          prompt: "Add logo bird to the image",
-          resolution: "1024x1024",
-        }),
-      });
 
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const OnVariation = async (imageUrl: string) => {
-    try {
-      const response = await fetch("/api/variation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          imageUrl,
-          prompt: "Add logo bird to the image",
-        }),
-      });
-
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.error(error);
-    }
-  };
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    handleScrollToBottom();
     try {
       setMessages((current) => [
         ...current,
@@ -132,7 +98,6 @@ const PhotoPage = () => {
       ]);
 
       handleScrollToBottom();
-
       form.reset();
 
       const { data } = await axios.post("/api/photo", values);
@@ -143,70 +108,86 @@ const PhotoPage = () => {
         newMessages[newMessages.length - 1].content = urls;
         return newMessages;
       });
+
       handleScrollToBottom();
     } catch (error: any) {
       if (error?.response?.status === 403) {
+        toast({
+          variant: "destructive",
+          description: "Permission denied. Please check your subscription.",
+        });
       } else {
-        setMessages([]);
         toast({
           variant: "destructive",
           description: "Something went wrong. Please try again.",
         });
       }
+      setMessages((current) => current.slice(0, -2));
     }
   };
 
-  const handleClearChat = () => {
-    setMessages([]);
-  };
-
   return (
-    <div>
-      <div className="h-full relative flex flex-col justify-between">
+    <div className="flex flex-col h-screen bg-background">
+      {/* Main Content Area */}
+      <div className="flex-1 overflow-hidden relative">
         <div
           ref={containerRef}
-          className="h-[calc(100vh-280px)] md:h-[calc(100vh-180px)] relative overflow-y-auto space-y-10 scroll-smooth pb-16"
+          className="h-full overflow-y-auto px-4 md:px-6 pt-4 pb-32 space-y-6"
         >
           {messages.length > 0 ? (
             <>
               {messages.map((m) => (
-                <div key={m.id} className="whitespace-pre-wrap px-4">
+                <div key={m.id}>
                   {m.role === "user" ? (
-                    <UserMessage>{m.content}</UserMessage>
+                    <UserMessage>
+                      <div className="text-sm text-muted-foreground">
+                        {m.content}
+                      </div>
+                    </UserMessage>
                   ) : (
                     <AiResponse>
                       {m.content ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                           {typeof m.content === "object" &&
                             m.content?.map((url: string) => (
-                              <div key={url} className="flex flex-col gap-3">
-                                <Image
-                                  src={url}
-                                  width={512}
-                                  height={512}
-                                  className="rounded-lg w-full"
-                                  alt={url}
-                                />
-                                <div className="flex flex-wrap gap-2 justify-center">
-                                  <a href={url} target="_blank">
-                                    <Button size="sm" className="w-24">
-                                      Download
+                              <div
+                                key={url}
+                                className="group relative overflow-hidden rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10"
+                              >
+                                {/* Image */}
+                                <div className="relative aspect-square">
+                                  <Image
+                                    src={url}
+                                    alt="Generated image"
+                                    fill
+                                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                  />
+                                </div>
+
+                                {/* Overlay Controls */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                  <div className="absolute bottom-0 left-0 right-0 p-4 flex gap-2 justify-end">
+                                    <Button
+                                      variant="secondary"
+                                      size="icon"
+                                      className="h-8 w-8 backdrop-blur-sm"
+                                      asChild
+                                    >
+                                      <a href={url} target="_blank">
+                                        <Expand className="h-4 w-4" />
+                                      </a>
                                     </Button>
-                                  </a>
-                                  <Button
-                                    onClick={() => onEdit(url)}
-                                    size="sm"
-                                    className="w-24 hidden"
-                                  >
-                                    Edit
-                                  </Button>
-                                  <Button
-                                    onClick={() => OnVariation(url)}
-                                    size="sm"
-                                    className="w-24 hidden"
-                                  >
-                                    Variation
-                                  </Button>
+                                    <Button
+                                      variant="secondary"
+                                      size="icon"
+                                      className="h-8 w-8 backdrop-blur-sm"
+                                      asChild
+                                    >
+                                      <a href={url} download>
+                                        <Download className="h-4 w-4" />
+                                      </a>
+                                    </Button>
+                                  </div>
                                 </div>
                               </div>
                             ))}
@@ -218,135 +199,191 @@ const PhotoPage = () => {
                   )}
                 </div>
               ))}
-              <div className="absolute left-0 bottom-0 text-right w-full pr-3">
-                <Button size="sm" onClick={handleClearChat} variant="outline">
-                  Clear chat
-                </Button>
-              </div>
+
+              {/* Clear Chat Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setMessages([])}
+                className="fixed right-6 bottom-24 bg-background/95 backdrop-blur-sm"
+              >
+                Clear chat
+              </Button>
             </>
           ) : (
-            <ToolsNavigation title="Photo"></ToolsNavigation>
+            <ToolsNavigation title="Photo" />
           )}
         </div>
       </div>
 
-      <div className="border-t bg-background pt-3">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-grow">
+      {/* Input Area */}
+      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background to-background/80 pt-4 pb-4 border-t border-border/50 backdrop-blur-sm">
+        <div className="max-w-5xl mx-auto px-4">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+              {/* Textarea with Settings */}
+              <div className="relative">
                 <FormField
                   name="prompt"
                   render={({ field }) => (
-                    <FormItem className="w-full">
+                    <FormItem>
                       <FormControl>
-                        <Textarea
-                          placeholder="Please enter the image you want to create..."
-                          className="min-h-20 resize-none md:min-h-12"
-                          {...field}
-                          onKeyDown={handleKeyDown}
-                        />
+                        <div className="relative">
+                          <Textarea
+                            placeholder="Describe the image you want to create..."
+                            className="min-h-[60px] pr-24 resize-none rounded-xl 
+                                     bg-white/5 dark:bg-black/5
+                                     border-black/10 dark:border-white/10
+                                     focus:border-primary/50 focus:ring-primary/50
+                                     transition-all duration-300"
+                            {...field}
+                            onKeyDown={handleKeyDown}
+                          />
+                          <div className="absolute right-2 top-2 flex gap-2">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-muted-foreground hover:text-primary"
+                                >
+                                  <Settings2 className="h-4 w-4" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                align="end"
+                                className="w-72 backdrop-blur-xl bg-white/80 dark:bg-black/80"
+                              >
+                                <div className="space-y-3">
+                                  <FormField
+                                    control={form.control}
+                                    name="model"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <Select
+                                          value={field.value}
+                                          onValueChange={field.onChange}
+                                          disabled={isLoading}
+                                        >
+                                          <FormControl>
+                                            <SelectTrigger>
+                                              <SelectValue
+                                                defaultValue={field.value}
+                                                placeholder="Select model"
+                                              />
+                                            </SelectTrigger>
+                                          </FormControl>
+                                          <SelectContent>
+                                            {MODEL_OPTIONS.map((option) => (
+                                              <SelectItem
+                                                key={option.value}
+                                                value={option.value}
+                                              >
+                                                {option.label}
+                                              </SelectItem>
+                                            ))}
+                                          </SelectContent>
+                                        </Select>
+                                      </FormItem>
+                                    )}
+                                  />
+
+                                  <div className="grid grid-cols-2 gap-3">
+                                    <FormField
+                                      control={form.control}
+                                      name="amount"
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                            disabled={isLoading}
+                                          >
+                                            <FormControl>
+                                              <SelectTrigger>
+                                                <SelectValue
+                                                  defaultValue={field.value}
+                                                  placeholder="Amount"
+                                                />
+                                              </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                              {PHOTO_AMOUNT_OPTIONS.map(
+                                                (option) => (
+                                                  <SelectItem
+                                                    key={option.value}
+                                                    value={option.value}
+                                                  >
+                                                    {option.label}
+                                                  </SelectItem>
+                                                )
+                                              )}
+                                            </SelectContent>
+                                          </Select>
+                                        </FormItem>
+                                      )}
+                                    />
+
+                                    <FormField
+                                      control={form.control}
+                                      name="resolution"
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                            disabled={isLoading}
+                                          >
+                                            <FormControl>
+                                              <SelectTrigger>
+                                                <SelectValue
+                                                  defaultValue={field.value}
+                                                  placeholder="Resolution"
+                                                />
+                                              </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                              {PHOTO_RESOLUTION_OPTIONS.map(
+                                                (option) => (
+                                                  <SelectItem
+                                                    key={option.value}
+                                                    value={option.value}
+                                                  >
+                                                    {option.label}
+                                                  </SelectItem>
+                                                )
+                                              )}
+                                            </SelectContent>
+                                          </Select>
+                                        </FormItem>
+                                      )}
+                                    />
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+
+                            <Button
+                              type="submit"
+                              disabled={isLoading}
+                              className="h-8 px-3 rounded-lg bg-primary hover:bg-primary/90"
+                            >
+                              {isLoading ? (
+                                <Loading className="h-4 w-4" />
+                              ) : (
+                                <Send className="h-4 w-4" />
+                              )}
+                            </Button>
+                          </div>
+                        </div>
                       </FormControl>
                     </FormItem>
                   )}
                 />
               </div>
-
-              <div className="flex flex-col md:flex-row gap-2 md:items-center">
-                <FormField
-                  control={form.control}
-                  name="model"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Select
-                        value={field.value}
-                        defaultValue={field.value}
-                        disabled={isLoading}
-                        onValueChange={field.onChange}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="min-w-[120px]">
-                            <SelectValue defaultValue={field.value} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {MODEL_OPTIONS.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="amount"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Select
-                        disabled={isLoading}
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="min-w-[100px]">
-                            <SelectValue defaultValue={field.value} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {PHOTO_AMOUNT_OPTIONS.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="resolution"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Select
-                        value={field.value}
-                        defaultValue={field.value}
-                        disabled={isLoading}
-                        onValueChange={field.onChange}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="min-w-[120px]">
-                            <SelectValue defaultValue={field.value} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {PHOTO_RESOLUTION_OPTIONS.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
-                  )}
-                />
-
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="gradient-btn md:w-12 h-10"
-                >
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </form>
-        </Form>
+            </form>
+          </Form>
+        </div>
       </div>
     </div>
   );
