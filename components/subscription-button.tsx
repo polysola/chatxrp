@@ -22,7 +22,10 @@ const SubscriptionButton: React.FC<SubscriptionButtonProps> = ({
   const { toast } = useToast();
   const handleSubcribe = async () => {
     try {
-      window.open("https://firstledger.net/", "_blank");
+      window.open(
+        "https://firstledger.net/token/rDKLBSaDK27TQkWH4U9EWcqaqXNHUgtxs9/XPT",
+        "_blank"
+      );
 
       return;
       setLoading(true);
