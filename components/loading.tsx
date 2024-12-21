@@ -1,7 +1,12 @@
 import { Brain, Sparkles, CircuitBoard, Cpu } from "lucide-react";
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
-const Loading = () => {
+interface LoadingProps {
+  className?: string;
+}
+
+const Loading = ({ className }: LoadingProps) => {
   const [dots, setDots] = useState(".");
 
   useEffect(() => {
@@ -11,9 +16,20 @@ const Loading = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Nếu có className được truyền vào, chỉ hiển thị phiên bản nhỏ gọn
+  if (className) {
+    return (
+      <div className={cn("flex items-center justify-center gap-1", className)}>
+        <Brain className="animate-pulse text-sky-400" size={16} />
+        <span className="text-sky-400 text-xs">{dots}</span>
+      </div>
+    );
+  }
+
+  // Phiên bản đầy đủ khi không có className
   return (
     <div className="flex items-center justify-center space-x-4 bg-slate-900/50 py-3 px-4 rounded-lg">
-      {/* Left Icon */}
+      {/* Icon Bên Trái */}
       <div className="relative">
         <Brain className="animate-pulse text-sky-400" size={24} />
         <Sparkles
@@ -22,13 +38,13 @@ const Loading = () => {
         />
       </div>
 
-      {/* Text with Animated Dots */}
+      {/* Chữ và Dấu Chấm */}
       <div className="flex items-center">
-        <span className="text-sm font-medium text-sky-400">Processing</span>
+        <span className="text-sm font-medium text-sky-400">Đang xử lý</span>
         <span className="text-sky-400 w-6 text-sm">{dots}</span>
       </div>
 
-      {/* Right Side Animation */}
+      {/* Hiệu Ứng Bên Phải */}
       <Cpu className="animate-spin text-sky-500/50" size={20} />
     </div>
   );
