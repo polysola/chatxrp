@@ -31,7 +31,15 @@ const ConversationPage = () => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       if (input.trim()) {
-        handleSubmit(e);
+        // Create a synthetic form event
+        const form = e.currentTarget.closest("form");
+        if (form) {
+          const syntheticEvent = new Event("submit", {
+            bubbles: true,
+            cancelable: true,
+          }) as unknown as React.FormEvent<HTMLFormElement>;
+          handleSubmit(syntheticEvent);
+        }
       }
     }
   };
