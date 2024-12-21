@@ -16,7 +16,6 @@ const Loading = ({ className }: LoadingProps) => {
     return () => clearInterval(interval);
   }, []);
 
-  // Nếu có className được truyền vào, chỉ hiển thị phiên bản nhỏ gọn
   if (className) {
     return (
       <div className={cn("flex items-center justify-center gap-1", className)}>
@@ -26,7 +25,6 @@ const Loading = ({ className }: LoadingProps) => {
     );
   }
 
-  // Phiên bản đầy đủ khi không có className
   return (
     <div className="flex items-center justify-center space-x-4 bg-slate-900/50 py-3 px-4 rounded-lg">
       {/* Icon Bên Trái */}
@@ -40,7 +38,7 @@ const Loading = ({ className }: LoadingProps) => {
 
       {/* Chữ và Dấu Chấm */}
       <div className="flex items-center">
-        <span className="text-sm font-medium text-sky-400">Processing...</span>
+        <span className="text-sm font-medium text-sky-400">Processing</span>
         <span className="text-sky-400 w-6 text-sm">{dots}</span>
       </div>
 
