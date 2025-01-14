@@ -23,7 +23,7 @@ const SubscriptionButton: React.FC<SubscriptionButtonProps> = ({
   const handleSubcribe = async () => {
     try {
       window.open(
-        "https://firstledger.net",
+        "https://firstledger.net/token/r4Lb9VAALuHCs6kBuHQ6onLu8UtJqUYu5s/5852504700000000000000000000000000000000",
         "_blank"
       );
 
