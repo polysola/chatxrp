@@ -20,15 +20,15 @@ const Logo: React.FC<LogoProps> = ({ className }) => {
 
       <Image
         src="/logo.png"
-        width={40}
-        height={40}
+        width={120}
+        height={120}
         alt="logo"
         className="rounded"
       />
 
-      <span className={cn("ml-2 font-bold text-2xl", poppins.className)}>
+      {/* <span className={cn("ml-2 font-bold text-2xl", poppins.className)}>
         XRP Gemini
-      </span>
+      </span> */}
     </a>
   );
 };

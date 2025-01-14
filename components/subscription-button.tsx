@@ -41,7 +41,7 @@ const SubscriptionButton: React.FC<SubscriptionButtonProps> = ({
     }
   };
   return (
-    <div className={cn("flex justify-center items-center", className)}>
+    <div className={cn("flex justify-center items-center mt-4", className)}>
       <Button
         variant="outline"
         size="lg"
