@@ -26,7 +26,7 @@ const Hero = () => {
           <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
             <div className="hidden sm:mb-8 sm:flex sm:justify-center">
               <div className="rounded-full px-3 py-1 text-sm leading-6 text-gray-400 border">
-                Get started with Chat XPT AI
+                Get started with XRP Gemini AI
               </div>
             </div>
             <div className="text-center">
@@ -43,7 +43,7 @@ const Hero = () => {
                 </span>
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-700">
-                Chat XPT AI has been integrated into the XRP Ledger.
+                XRP Gemini AI has been integrated into the XRP Ledger.
               </p>
               <div className="mt-10 flex flex-col items-center justify-center gap-8">
                 <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-6">
@@ -60,7 +60,7 @@ const Hero = () => {
 
                 <div className="flex items-center justify-center gap-4">
                   <a
-                    href="hhttps://x.com/XRPAI_ChatXPT"
+                    href="hhttps://x.com/XRPGemini_AI"
                     className="text-sm font-semibold leading-6 text-gray-400"
                   >
                     <svg
@@ -80,7 +80,7 @@ const Hero = () => {
                     </svg>
                   </a>
                   <a
-                    href="https://t.me/ChatXPT_Portal"
+                    href="https://t.me/XRPGeminiAI_Portal"
                     className="text-sm font-semibold leading-6 text-gray-400"
                   >
                     <svg

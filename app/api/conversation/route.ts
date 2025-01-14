@@ -12,7 +12,7 @@ const configuration = {
 
 const instructionMessage = {
     role: "system",
-    content: "You are Chat XPT AI on XRPL.Link: hhttps://x.com/XRPAI_ChatXPT,https://t.me/ChatXPT_Portal"
+    content: "You are XRP Gemini AI on XRPL.Link: https://x.com/XRPGemini_AI,https://t.me/XRPGeminiAI_Portal"
 };
 const openai = new OpenAI(configuration)
 

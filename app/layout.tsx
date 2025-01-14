@@ -8,8 +8,8 @@ import NextTopLoader from "nextjs-toploader";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Chat XPT",
-  description: "Chat XPT AI has been integrated into the XRP Ledger. ",
+  title: "XRP Gemini",
+  description: "XRP Gemini AI has been integrated into the XRP Ledger. ",
 };
 
 export default function RootLayout({
